@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Character Consistency Reasoning Engine - AI-powered character analysis for story continuity.">
+    <title>Character Consistency Reasoning Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Character Consistency <span class="accent">Reasoning Engine</span></h1>
+            <p class="subtitle">Human-like reasoning for story character analysis</p>
+        </header>
+
+        <main>
+            <section class="input-section card">
+                <div class="input-group">
+                    <label for="story-input">📖 Paste the FULL Story Text</label>
+                    <textarea id="story-input" placeholder="Paste the complete story or novel here..."></textarea>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group half">
+                        <label for="backstory-input">🧠 Paste the Character Backstory</label>
+                        <textarea id="backstory-input" placeholder="Paste the character’s background description..."></textarea>
+                    </div>
+                    <div class="input-group half">
+                        <label for="character-name">👤 Character Name</label>
+                        <input type="text" id="character-name" placeholder="e.g., Harry, John, Alice">
+                        
+                        <div class="action-container">
+                            <button id="analyze-btn" disabled>🔍 Analyze Character</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="loading-state" class="loading-state hidden">
+                <div class="loader"></div>
+                <p id="loading-text">Reading story and reasoning like a human...</p>
+            </section>
+
+            <section id="results-section" class="results-section hidden">
+                <div class="results-grid">
+                    <!-- Final Judgment -->
+                    <div class="result-card prediction-card animate-in">
+                        <h3>Final Judgment</h3>
+                        <div id="judgment-badge" class="badge">
+                            <span class="icon"></span>
+                            <span class="text"></span>
+                        </div>
+                    </div>
+
+                    <!-- Character Profile -->
+                    <div class="result-card profile-card animate-in">
+                        <h3>Character Profile</h3>
+                        <div class="profile-traits">
+                            <div class="trait">
+                                <span class="trait-label">Violence</span>
+                                <span id="trait-violence" class="trait-value"></span>
+                            </div>
+                            <div class="trait">
+                                <span class="trait-label">Risk-taking</span>
+                                <span id="trait-risk" class="trait-value"></span>
+                            </div>
+                            <div class="trait">
+                                <span class="trait-label">Trustworthiness</span>
+                                <span id="trait-trust" class="trait-value"></span>
+                            </div>
+                            <div class="trait">
+                                <span class="trait-label">Authority Respect</span>
+                                <span id="trait-authority" class="trait-value"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claim Analysis -->
+                    <div class="result-card table-card animate-in">
+                        <h3>Claim Analysis</h3>
+                        <div class="table-container">
+                            <table id="claims-table">
+                               <thead>
+                                   <tr>
+                                       <th>Backstory Claim</th>
+                                       <th>Verdict</th>
+                                       <th>Evidence</th>
+                                   </tr>
+                               </thead>
+                               <tbody id="claims-body">
+                                   <!-- Rows injected by JS -->
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Final Explanation -->
+                    <div class="result-card explanation-card animate-in">
+                        <h3>Final Explanation</h3>
+                        <div id="explanation-content" class="explanation-text">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Character Consistency Reasoning Engine | Advanced Narrative Analysis</p>
+        </footer>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
