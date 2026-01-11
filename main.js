@@ -18,7 +18,11 @@ const elements = {
     traitRisk: document.getElementById('trait-risk'),
     traitTrust: document.getElementById('trait-trust'),
     traitAuthority: document.getElementById('trait-authority'),
-    inputSection: document.querySelector('.input-section')
+    inputSection: document.querySelector('.input-section'),
+    followUpSection: document.getElementById('follow-up-section'),
+    followUpInput: document.getElementById('follow-up-input'),
+    askBtn: document.getElementById('ask-btn'),
+    followUpResults: document.getElementById('follow-up-results')
 };
 
 // --- UI State Management ---
@@ -191,6 +195,7 @@ function renderResults(data) {
 
     // Show results
     elements.resultsSection.classList.remove('hidden');
+    elements.followUpSection.classList.remove('hidden');
     elements.resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -224,3 +229,46 @@ elements.analyzeBtn.addEventListener('click', async () => {
         elements.analyzeBtn.disabled = false;
     }
 });
+
+// --- Follow-up Logic ---
+
+elements.askBtn.addEventListener('click', async () => {
+    const question = elements.followUpInput.value.trim();
+    if (!question) return;
+
+    elements.askBtn.disabled = true;
+    elements.askBtn.textContent = 'Reasoning...';
+
+    // Simulate API delay
+    await sleep(1500);
+
+    const answer = generateFollowUpAnswer(question, elements.storyInput.value, elements.backstoryInput.value, elements.charName.value);
+
+    const answerEl = document.createElement('div');
+    answerEl.className = 'follow-up-answer';
+    answerEl.innerHTML = `
+        <div class="question">Q: ${question}</div>
+        <div class="answer">${answer}</div>
+    `;
+
+    elements.followUpResults.prepend(answerEl);
+    elements.followUpInput.value = '';
+    elements.askBtn.disabled = false;
+    elements.askBtn.textContent = 'Ask Engine';
+});
+
+function generateFollowUpAnswer(question, story, backstory, character) {
+    const q = question.toLowerCase();
+    const s = story.toLowerCase();
+    const b = backstory.toLowerCase();
+
+    if (q.includes('why') || q.includes('reason')) {
+        return `Based on the behavioral profile, ${character}'s actions stem from a tension between their established ${b.includes('brave') ? 'bravery' : 'traits'} and the immediate ${s.includes('fear') ? 'fear' : 'threat'} presented in the narrative. The story suggests a prioritize-survival instinct that overrides the backstory protocols.`;
+    }
+
+    if (q.includes('motive') || q.includes('feeling')) {
+        return `The textual evidence suggests ${character} is experiencing a cognitive dissonance. While the backstory demands one path, the narrative environment triggers an emotional response (likely ${s.includes('dragon') ? 'terror' : 'apprehension'}) that wasn't accounted for in the original profile.`;
+    }
+
+    return `Narrative analysis indicates that ${character}'s response to this specific query is tied to the internal consistency of the story arc. Every mention of "${character}" in the text supports a specialized reasoning that aligns with the observed ${s.length > 500 ? 'complex' : 'simple'} plot structure.`;
+}

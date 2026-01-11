@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Character Consistency Reasoning Engine - AI-powered character analysis for story continuity.">
+    <meta name="description"
+        content="Character Consistency Reasoning Engine - AI-powered character analysis for story continuity.">
     <title>Character Consistency Reasoning Engine</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="app-container">
         <header>
@@ -27,12 +32,13 @@
                 <div class="input-row">
                     <div class="input-group half">
                         <label for="backstory-input">🧠 Paste the Character Backstory</label>
-                        <textarea id="backstory-input" placeholder="Paste the character’s background description..."></textarea>
+                        <textarea id="backstory-input"
+                            placeholder="Paste the character’s background description..."></textarea>
                     </div>
                     <div class="input-group half">
                         <label for="character-name">👤 Character Name</label>
                         <input type="text" id="character-name" placeholder="e.g., Harry, John, Alice">
-                        
+
                         <div class="action-container">
                             <button id="analyze-btn" disabled>🔍 Analyze Character</button>
                         </div>
@@ -84,16 +90,16 @@
                         <h3>Claim Analysis</h3>
                         <div class="table-container">
                             <table id="claims-table">
-                               <thead>
-                                   <tr>
-                                       <th>Backstory Claim</th>
-                                       <th>Verdict</th>
-                                       <th>Evidence</th>
-                                   </tr>
-                               </thead>
-                               <tbody id="claims-body">
-                                   <!-- Rows injected by JS -->
-                               </tbody>
+                                <thead>
+                                    <tr>
+                                        <th>Backstory Claim</th>
+                                        <th>Verdict</th>
+                                        <th>Evidence</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="claims-body">
+                                    <!-- Rows injected by JS -->
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -102,6 +108,23 @@
                     <div class="result-card explanation-card animate-in">
                         <h3>Final Explanation</h3>
                         <div id="explanation-content" class="explanation-text">
+                        </div>
+                    </div>
+
+                    <!-- Follow-up Questions Section -->
+                    <div id="follow-up-section" class="result-card follow-up-card animate-in hidden">
+                        <h3>🔍 Post-Analysis Queries</h3>
+                        <div class="query-container">
+                            <p class="query-hint">Ask specific questions about the character's behavior or hidden
+                                motives based on the story context.</p>
+                            <div class="query-input-row">
+                                <input type="text" id="follow-up-input"
+                                    placeholder="e.g., Why did Harry run away if he is a brave knight?">
+                                <button id="ask-btn">Ask Engine</button>
+                            </div>
+                            <div id="follow-up-results" class="follow-up-results">
+                                <!-- AI Answers injected here -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -114,4 +137,5 @@
     </div>
     <script type="module" src="main.js"></script>
 </body>
+
 </html>

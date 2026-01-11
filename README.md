@@ -8,6 +8,7 @@ A premium, AI-powered reasoning system designed to analyze story narrative conti
 - **Backstory Cross-Referencing**: Isolates specific claims from character descriptions and validates them with story evidence.
 - **Rule-Based Judgment**: Uses a strict reasoning logic where multiple strong contradictions trigger a "Contradicted" verdict.
 - **Multidimensional Profile**: Evaluates character traits like Violence, Risk-taking, Trustworthiness, and Authority Respect.
+- **Post-Analysis Queries**: A specialized chat-style box for asking "future questions" or seeking clarification on character motives and decision-making logic.
 - **Human-Readable Explanations**: Provides detailed synthesis of *why* a character is judged consistent or otherwise.
 - **Premium Research UI**: A clean, modern interface featuring glassmorphism, responsive design, and smooth animations.
 
