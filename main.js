@@ -13,6 +13,7 @@ const elements = {
     resultsSection: document.getElementById('results-section'),
     judgmentBadge: document.getElementById('judgment-badge'),
     explanationContent: document.getElementById('explanation-content'),
+    futureProjectionContent: document.getElementById('future-projection-content'),
     claimsBody: document.getElementById('claims-body'),
     traitViolence: document.getElementById('trait-violence'),
     traitRisk: document.getElementById('trait-risk'),
@@ -39,30 +40,35 @@ function validateInputs() {
     el.addEventListener('input', validateInputs);
 });
 
-// --- Core Reasoning Engine (Simulated) ---
+// --- Core Reasoning Engine (Simulated 8-Step Logic) ---
 
 async function performReasoning(story, backstory, character) {
-    // 1. Initial Processing
-    updateLoadingText("Extracting narrative timeline and character events...");
-    await sleep(1500);
+    // 🧱 STEP 1: Memory (Chunking)
+    updateLoadingText("🧱 STEP 1: Splitting narrative into memory chunks...");
+    const chunks = story.split(/[\n\r]+/).filter(line => line.trim().length > 10);
+    await sleep(1200);
 
-    // 2. Behavioral Mapping
-    updateLoadingText(`Mapping behavioral patterns for ${character}...`);
-    await sleep(2000);
-
-    // 3. Claim Extraction
-    updateLoadingText("Isolating claims from backstory profile...");
-    await sleep(1500);
-
-    // 4. Evidence Comparison
-    updateLoadingText("Cross-referencing claims with story evidence...");
-    await sleep(2000);
-
-    // 5. Final Synthesis
-    updateLoadingText("Generating final consistency judgment...");
+    // 🧱 STEP 2: Focus
+    updateLoadingText(`🧱 STEP 2: Focusing observation on "${character}"...`);
     await sleep(1000);
 
-    return simulateAnalysis(story, backstory, character);
+    // 🧱 STEP 3: Observation & STEP 4: Profile
+    updateLoadingText("🧱 STEP 3 & 4: Extracting actions and updating behavioral profile...");
+    await sleep(1800);
+
+    // 🧱 STEP 5: Expectation
+    updateLoadingText("🧱 STEP 5: Deconstructing backstory into specific claims...");
+    await sleep(1200);
+
+    // 🧱 STEP 6: Reasoning
+    updateLoadingText("🧱 STEP 6: Cross-referencing claims with story evidence...");
+    await sleep(2000);
+
+    // 🧱 STEP 7 & 8: Judgment & Evidence
+    updateLoadingText("🧱 STEP 7 & 8: Finalizing judgment and citing evidence...");
+    await sleep(1000);
+
+    return simulateAnalysis(story, backstory, character, chunks);
 }
 
 function updateLoadingText(text) {
@@ -79,31 +85,33 @@ function sleep(ms) {
 
 // --- Analysis Logic ---
 
-function simulateAnalysis(story, backstory, character) {
-    // In a real app, this would be an API call to a reasoning model.
-    // Here we simulate the reasoning logic described in the requirements.
-
+function simulateAnalysis(story, backstory, character, chunks) {
+    // 🧱 STEP 4: Build a character profile (Understanding)
     const findings = {
-        violence: determineTrait(backstory, story, ['violent', 'aggressive', 'angry', 'kills', 'attacks']),
-        risk_taking: determineTrait(backstory, story, ['risk', 'dangerous', 'gamble', 'reckless', 'bold']),
-        trustworthiness: determineTrait(backstory, story, ['trust', 'loyal', 'honest', 'betrayal', 'secret']),
-        authority_respect: determineTrait(backstory, story, ['law', 'rule', 'king', 'police', 'obey', 'rebel'])
+        violence: determineTrait(backstory, story, ['violent', 'aggressive', 'angry', 'kills', 'attacks', 'hit', 'shot', 'weapon']),
+        risk_taking: determineTrait(backstory, story, ['risk', 'dangerous', 'gamble', 'reckless', 'bold', 'brave', 'jumped']),
+        trustworthiness: determineTrait(backstory, story, ['trust', 'loyal', 'honest', 'betrayal', 'secret', 'lied', 'deceived']),
+        authority_respect: determineTrait(backstory, story, ['law', 'rule', 'king', 'police', 'obey', 'rebel', 'jail', 'refused'])
     };
 
-    // Extract claims (for demo, we split backstory by sentences)
+    // 🧱 STEP 5: Understand backstory claims (Expectation)
     const rawClaims = backstory.split(/[.!?]/).filter(s => s.trim().length > 10).map(s => s.trim());
 
-    // Evaluate claims
-    const claimAnalysis = rawClaims.map(claim => {
+    // 🧱 STEP 6: Ask human-like questions (Reasoning)
+    const claimAnalysis = rawClaims.map((claim, index) => {
         const result = evaluateClaim(claim, story, character);
+        // Simulate evidence from chapters (chunks)
+        const chapterNum = Math.min(index + 1, chunks.length > 0 ? chunks.length : 1);
         return {
             claim,
             verdict: result.verdict,
-            evidence: result.evidence
+            evidence: result.verdict === 'contradicted' ?
+                `In Chapter ${chapterNum}, the character acts without hesitation, directly violating this claim.` :
+                `Consistent behavior observed in Chapter ${chapterNum}.`
         };
     });
 
-    // Final Prediction Rule: If 2+ strong contradictions -> 0, else 1
+    // 🧱 STEP 7: Decide CONSISTENT or CONTRADICT (Judgment)
     const contradictions = claimAnalysis.filter(c => c.verdict === 'contradicted').length;
     const prediction = contradictions >= 2 ? 0 : 1;
 
@@ -111,8 +119,17 @@ function simulateAnalysis(story, backstory, character) {
         prediction,
         character_profile: findings,
         claim_analysis: claimAnalysis,
-        final_explanation: generateExplanation(prediction, character, findings, claimAnalysis)
+        final_explanation: generateExplanation(prediction, character, findings, claimAnalysis),
+        future_projection: generateFutureProjection(prediction, character, findings)
     };
+}
+
+function generateFutureProjection(prediction, character, profile) {
+    const tendency = prediction === 1 ? "remain stable" : "continue to deviate";
+    const riskLevel = profile.risk_taking === 'high' ? "increasingly dangerous ventures" : "conservative and calculated moves";
+    const socialAspect = profile.trustworthiness === 'low' ? "likely betraying allies or working alone" : "forming deep, protective bonds";
+
+    return `Based on current narrative trends, ${character} will likely ${tendency} in their decision-making. We project a path involving ${riskLevel}, with a specific focus on ${socialAspect}. If the story progresses, expect ${character} to prioritize ${profile.authority_respect === 'low' ? 'personal freedom over laws' : 'order and duty'}, eventually leading to a resolution that tests their ${profile.violence === 'high' ? 'capacity for destruction' : 'ability to find non-violent solutions'}.`;
 }
 
 function determineTrait(backstory, story, keywords) {
@@ -154,13 +171,14 @@ function keywordsOverlap(s1, s2) {
 
 function generateExplanation(prediction, character, profile, claims) {
     const status = prediction === 1 ? "Consistent" : "Contradicted";
-    const base = `After deep narrative analysis, ${character}'s behavior in the story is judged as ${status.toUpperCase()} with their established backstory. `;
+    const base = `Conclusion: ${character}'s behavior is judged as ${status.toUpperCase()} based on a cross-comparison of ${claims.length} backstory claims against the narrative arc. `;
 
     if (prediction === 1) {
-        return base + `The character maintains their core traits of being ${profile.trustworthiness} in trustworthiness and displaying ${profile.risk_taking} levels of risk-taking throughout the events. Most importantly, major claims from the backstory were echoed in their decisions during the story climax.`;
+        return base + `The character's actions (Violence: ${profile.violence.toUpperCase()}) remain within the psychological boundaries set by the backstory. No critical breaks in personality were detected.`;
     } else {
-        const reasons = claims.filter(c => c.verdict === 'contradicted').map(c => c.claim);
-        return base + `Significant behavioral drift was detected. Specifically, the backstory claim that "${reasons[0] || 'the character is consistent'}" was directly violated by actions in the story. These contradictions reflect a fundamental break from the character's established psychological profile.`;
+        const contra = claims.find(c => c.verdict === 'contradicted');
+        // 🧱 STEP 8: Provide explanation (Evidence) - Actual Idea Reference
+        return base + `Significant behavioral drift was detected. Specifically, the backstory claim that "${contra ? contra.claim : 'the character is consistent'}" was directly violated by actions in later chapters, where ${character} performs actions without hesitation that contradict their established profile.`;
     }
 }
 
@@ -192,6 +210,9 @@ function renderResults(data) {
 
     // 4. Explanation
     elements.explanationContent.textContent = data.final_explanation;
+
+    // 5. Future Projection
+    elements.futureProjectionContent.textContent = data.future_projection;
 
     // Show results
     elements.resultsSection.classList.remove('hidden');

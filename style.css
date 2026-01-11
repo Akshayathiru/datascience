@@ -4,8 +4,8 @@
     --border-color: rgba(255, 255, 255, 0.1);
     --accent-color: #8b5cf6;
     --accent-glow: rgba(139, 92, 246, 0.3);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
     --success-color: #10b981;
     --error-color: #ef4444;
     --warning-color: #f59e0b;
@@ -49,6 +49,7 @@ header h1 {
     font-weight: 700;
     margin-bottom: 0.5rem;
     letter-spacing: -0.02em;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 header .accent {
@@ -114,6 +115,11 @@ input[type="text"] {
     font-family: var(--font-main);
     font-size: 1rem;
     transition: all 0.3s ease;
+}
+
+::placeholder {
+    color: #94a3b8;
+    opacity: 0.8;
 }
 
 textarea:focus,
