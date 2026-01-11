@@ -125,11 +125,32 @@ function simulateAnalysis(story, backstory, character, chunks) {
 }
 
 function generateFutureProjection(prediction, character, profile) {
-    const tendency = prediction === 1 ? "remain stable" : "continue to deviate";
-    const riskLevel = profile.risk_taking === 'high' ? "increasingly dangerous ventures" : "conservative and calculated moves";
-    const socialAspect = profile.trustworthiness === 'low' ? "likely betraying allies or working alone" : "forming deep, protective bonds";
+    const isConsistent = prediction === 1;
 
-    return `Based on current narrative trends, ${character} will likely ${tendency} in their decision-making. We project a path involving ${riskLevel}, with a specific focus on ${socialAspect}. If the story progresses, expect ${character} to prioritize ${profile.authority_respect === 'low' ? 'personal freedom over laws' : 'order and duty'}, eventually leading to a resolution that tests their ${profile.violence === 'high' ? 'capacity for destruction' : 'ability to find non-violent solutions'}.`;
+    // Core Narrative Arc
+    const coreArc = isConsistent
+        ? `${character} is expected to uphold their primary psychological anchors. Their decisions will likely mirror established patterns, though the story environment may force them into 'extreme consistency' where they double down on traits like ${profile.risk_taking} risk-taking.`
+        : `An irreversible shift in character dynamics has been detected. ${character} is entering a 'Transition Phase' where their future actions will likely betray their backstory entirely, favoring situational logic over established morality.`;
+
+    // Probability Phrasing
+    const actionForecast = profile.violence === 'high'
+        ? "High Probability of escalating physical conflict or a 'breaking point' climax."
+        : "Potential for tactical withdrawal or seeking diplomatic/non-violent resolutions.";
+
+    // Scenario Logic
+    const bestCase = isConsistent
+        ? "The character achieves their goal without compromising their core identity, reinforcing the 'Hero/Archetype' arc."
+        : "A moment of self-reflection leads to a painful reconciliation between their current behavior and their past self.";
+
+    const worstCase = isConsistent
+        ? "Over-commitment to their traits leads to a predictable failure or a 'fatal flaw' tragedy."
+        : "Complete loss of identity, where ${character} becomes unrecognizable and potentially becomes an antagonist to their own original goals.";
+
+    return {
+        coreArc,
+        actionForecast,
+        scenarios: { bestCase, worstCase }
+    };
 }
 
 function determineTrait(backstory, story, keywords) {
@@ -212,7 +233,24 @@ function renderResults(data) {
     elements.explanationContent.textContent = data.final_explanation;
 
     // 5. Future Projection
-    elements.futureProjectionContent.textContent = data.future_projection;
+    const fp = data.future_projection;
+    elements.futureProjectionContent.innerHTML = `
+        <p class="forecast-core">${fp.coreArc}</p>
+        <div class="forecast-grid">
+            <div class="forecast-item">
+                <span class="forecast-label">Primary Action Forecast</span>
+                <p>${fp.actionForecast}</p>
+            </div>
+            <div class="forecast-item best">
+                <span class="forecast-label">Potential Best-Case Arc</span>
+                <p>${fp.scenarios.bestCase}</p>
+            </div>
+            <div class="forecast-item worst">
+                <span class="forecast-label">Potential Worst-Case Arc</span>
+                <p>${fp.scenarios.worstCase}</p>
+            </div>
+        </div>
+    `;
 
     // Show results
     elements.resultsSection.classList.remove('hidden');

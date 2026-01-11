@@ -498,6 +498,56 @@ td {
     border-left: 4px solid var(--accent-color);
 }
 
+.forecast-core {
+    margin-bottom: 2rem;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.forecast-item {
+    background: rgba(15, 23, 42, 0.4);
+    padding: 1.25rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.forecast-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.forecast-item p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+.forecast-item.best {
+    border-left: 3px solid var(--success-color);
+}
+
+.forecast-item.worst {
+    border-left: 3px solid var(--error-color);
+}
+
+@media (max-width: 900px) {
+    .forecast-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Animations */
 .animate-in {
     animation: slideUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
